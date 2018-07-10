@@ -22,26 +22,35 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <script src="resources/js/toDoList.js"></script>
-
 <title>Insert title here</title>
 </head>
 <body ng-app="todoApp" ng-controller="appController">
-
-	<div class="header">
+<div class="header">
 		<h2>Token Management System</h2>
 	</div>
-	<div class="container">
-		<div class="jumbotron">
-			<h2>Select Your Interface:</h2>
-			<h3>
-				<a href="/addtoken"> Customer</a>
-			</h3>
-
-			<h3>
-				<a href="/admin"> Banker</a>
-			</h3>
+<div class="row">
+		<div class="container">
+			<div class="jumbotron customerid">
+				<h2>Enter your customer id to generate token</h2>
+				<input type="text" ng-model="description" id="myInput"
+					placeholder="Cutomer Id"> <span ng-click="addRecord()"
+					class="addBtn">Generate</span>
+	
+			<br>
+			</div>
+			
+			<div class="jumbotron tokeninfo" style="display: none;">
+				<h2>Your token no is: <span id=tokenNo> 1 </span> </h2>
+				<h2>and counter no is: <span id=counterNo> 1</span> </h2>
+				
+			<br>
+			<h4><a href="/"> Go back to home page</a> </h4>
+			</div>
+		
+			
 		</div>
-	</div>
+
+</div>
 
 </body>
 </html>

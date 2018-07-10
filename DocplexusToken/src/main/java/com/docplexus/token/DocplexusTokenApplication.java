@@ -15,11 +15,19 @@ public class DocplexusTokenApplication {
 		SpringApplication.run(DocplexusTokenApplication.class, args);
 	}
 	
-	
-	
 	@RequestMapping(value="/", method = RequestMethod.GET)
     public String showLoginPage(ModelMap model){
         return "welcome";
+    }
+
+	
+	@RequestMapping(value="/admin", method = RequestMethod.GET)
+    public String showAdminPage(ModelMap model){
+        return "admin";
+    }
+	@RequestMapping(value="/addtoken", method = RequestMethod.GET)
+    public String showAddtokenPage(ModelMap model){
+        return "addToken";
     }
 	
 }
