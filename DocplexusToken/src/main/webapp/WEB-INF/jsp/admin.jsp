@@ -21,7 +21,7 @@
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<script src="resources/js/toDoList.js"></script>
+<script src="resources/js/admin.js"></script>
 <title>Insert title here</title>
 </head>
 <body ng-app="todoApp" ng-controller="adminController">
