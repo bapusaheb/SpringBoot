@@ -1,87 +1,92 @@
 package com.docplexus.token.service;
 
-import java.util.List;
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.List;import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.docplexus.token.manager.ArrayQueue;
 import com.docplexus.token.model.Branch;
 import com.docplexus.token.model.Customer;
 import com.docplexus.token.model.Token;
+@Component
+public class TokenService {
 
-public class TokenService{
+	public static List<ArrayQueue> list = new ArrayList<>();
+	static int tokenNo = 1;
+	static int lastInserted = 0;
+	static boolean flag = false;
 
-	public static List<ArrayQueue> list;;
+	@Autowired
+	com.docplexus.token.orm.BranchHome branchHome;
 	
-	public Token generateToken(Customer object, HttpServletRequest request,
-			HttpServletResponse httpServletResponse) {
+	public Token generateToken(Customer object, HttpServletRequest request, HttpServletResponse httpServletResponse) {
+		if(list.size() <= 0)
+			createCounterQueue(new Branch());
 	
 		
-		for (int i=0; i< list.size();i++) {
-			int s1=list.get(i).getList().size();
-			int s2=list.get(i+1).getList().size();
-			
-			if((s1 != 0 && s2!=0) && s1 > s2) {
-				//add element in s2
-				Token token=new  Token();
-				token.setTokenNo(list.get(i).getList().get((list.get(i).getList().size())).getTokenNo()+1);
-				token.setCounterNo(s2);
-				list.get(i+1).getList().add(token);
-				
-			}else {
-				
-			}
-			
-		}
+		if (lastInserted >= (list.size()))
+			lastInserted = 0;
+
+		list.get(lastInserted).getList().add(tokenNo);
+		flag = true;
+		lastInserted++;
+		Token token = new Token();
+		token.setCounterNo(lastInserted);
+		token.setTokenNo(tokenNo);
+		tokenNo++;
 		
 		
-		return null;
+		return token;
 	}
 
-	
 	public Token generateTokenForCustomer(Customer customer, Branch branch) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	
-	public List<Token> getCounterList(HttpServletRequest request, HttpServletResponse httpServletResponse) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Integer> getCounterList(HttpServletRequest request, HttpServletResponse httpServletResponse) {
+		//List<Integer> obj=list.get(0);
+		return list.stream().map(obj-> obj.getCounterNo()).collect(Collectors.toList());
 	}
 
-	
-	public List<Integer> getTokenQueue() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayQueue getTokenQueue(int counterNo) {
+		return list.get(counterNo-1);
 	}
 
-	
-	public List<Integer> tokenServiced() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayQueue tokenServiced(Token token) {
+		list.get(token.getCounterNo()-1).getList().remove(list.get(token.getCounterNo()-1).getList().indexOf(token.getTokenNo()));
+		return list.get(token.getCounterNo()-1);
 	}
 
-	
 	public int createCounterQueue(Branch b) {
-		// TODO Auto-generated method stub
+		List<com.docplexus.token.orm.Branch> counterNum=(List<com.docplexus.token.orm.Branch>) branchHome.findAll();
+	
+		for (int i = 0; i < counterNum.get(0).getCounters(); i++) {
+			ArrayQueue queue = new ArrayQueue();
+			queue.setCounterNo(i + 1);
+			List<Integer> tokens=new ArrayList<>();
+			queue.setList(tokens);
+			list.add(queue);
+		}
 		return 0;
 	}
 
-	
 	public boolean tokenQueueForCounter(int counterNum) {
+
 		
-		for(int i=0;i<counterNum;i++) {
-			ArrayQueue queue=new ArrayQueue();
-			queue.setCounterNo(i+1);
-			list.add(queue);
-		}
-	return true;
+		return true;
 	}
 
-	
 	public List<Integer> tokenServed(Token token) {
 		// TODO Auto-generated method stub
 		return null;
-	}}
+	}
+}

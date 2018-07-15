@@ -34,37 +34,38 @@
 				<h2>Branch Name:Pashan</h2>
 			</div>
 
-			<div class="jumbotron customerid">
-				<button type="button" class="btn btn-primary btn-sm">Get Counter list</button>
+			<div class="jumbotron getCounterlist">
+				<button type="button" ng-click="getlist()" class="btn btn-primary btn-sm">Get Counter list</button>
 			</div>
 
 
 
-		<div class="counterlist">
+		<div class="counterlist" style="display: none; " >
 		<ul >
-  		<li  ng-repeat="obj in data"  ng-class="{ 'checked': obj.status=='Completed' }">
- 		{{obj.counterNumber}}
+  		<li  ng-repeat="obj in counterlist" >
+ 		<a ng-click="getTokens(obj)">  Counter {{obj}} </a>
  		</li>
 		</ul>
 		
 		</div>	
 		
-		<div class="tokenlist">
+		<div class="tokenlist" style="display: none;">
 		
 		<div class="jumbotron customerid">
-				<h2>Current Token: <span>{{ctrl.curenttoken}}</span> </h2>
-				<button type="button" class="btn btn-primary btn-sm">Next</button>
+				<h2>Current Token: <span>{{data.list[0]}}</span> </h2>
+				<button type="button" ng-click="servToken(data)" class="btn btn-primary btn-sm">Next token</button>
 		</div>
 		 <h3>Token list</h3>
 		<ul >
-  		<li  ng-repeat="obj in data"  ng-class="{ 'checked': obj.status=='Completed' }">
- 		{{obj.description}}  <span  ng-class="{ 'tikMark': obj.status=='Pending' }" ng-click="markAsDone(obj)">Mark Done</span> <span class="close" ng-click="deleteRecord(obj)">×</span>
+  		<li  ng-repeat="tokenNo in data.list">
+ 		{{tokenNo}}
  		</li>
 		</ul>
 		</div>
 
 		</div>
 					<h3 class="center"><a href="/"> Go back to home </a></h3>
+					<h3 class="center"><a ng-click="getlist()"> Go back to Counter list </a></h3>
 	</div>
 
 </body>

@@ -7,7 +7,7 @@ import com.docplexus.token.model.Token;
 public class ArrayQueue {
 
 	private int counterNo;
-	private List<Token>list ;
+	private List<Integer>list ;
 	
 	public int getCounterNo() {
 		return counterNo;
@@ -15,10 +15,10 @@ public class ArrayQueue {
 	public void setCounterNo(int counterNo) {
 		this.counterNo = counterNo;
 	}
-	public List<Token> getList() {
+	public List<Integer> getList() {
 		return list;
 	}
-	public void setList(List<Token> list) {
+	public void setList(List<Integer> list) {
 		this.list = list;
 	}
 	

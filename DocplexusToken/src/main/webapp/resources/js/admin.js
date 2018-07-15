@@ -6,30 +6,40 @@
 var app = angular.module('todoApp', []);
 app.controller('adminController', function($scope,$http) {
   
-	 $http.get("http://localhost:2222/getAllRecords")
-	    .then(function(response) {
-	    	$scope.data = response.data.data;
-	    });
-	
-	 
-	 $scope.addRecord = function() {
-		 var parameter = JSON.stringify({name:"NA",description:$scope.description,status:"Pending"});
-		    $http.post("http://localhost:2222/saveOrUpdate", parameter).
-		    then(function(response, status, headers, config) {
-		    		$scope.data = response.data.data;
-		    		$scope.description="";
-		      });
+	 $scope.getlist = function() {
+		
+		 $http.get("http://localhost:2222/getCounterList")
+		    .then(function(response) {
+		    	$scope.counterlist = response.data.data;
+		    	$(".getCounterlist").hide();
+		    	$(".counterlist").show();
+		    	$(".tokenlist").hide();  	
+		    });
+		
 		 
 	    };
 	    
-	    $scope.markAsDone=function(obj) {
-	    	obj.status="Completed";
-			 var parameter = JSON.stringify(obj);
-			    $http.post("http://localhost:2222/saveOrUpdate", parameter).
+	
+	 
+	 $scope.getTokens= function(no) {
+		 var parameter = JSON.stringify({counterNo:no});
+		 $http.post("http://localhost:2222/getTokenQueue",parameter)
+		    .then(function(response) {
+		    	$scope.data = response.data.data;
+		    	$(".counterlist").hide();
+		    	$(".tokenlist").show();  	
+		    });
+		
+		 
+	    };
+	    
+	    $scope.servToken=function(obj) {
+	    	 var parameter = JSON.stringify({counterNo:obj.counterNo,tokenNo:obj.list[0]});
+	 		
+			    $http.post("http://localhost:2222/tokenServiced", parameter).
 			    then(function(response, status, headers, config) {
-			    		$scope.data = response.data.data;
-			    		
-			      });
+			    	$scope.data = response.data.data;
+			    	});
 			 
 		    };
 	 
